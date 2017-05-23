@@ -5,13 +5,17 @@
 </template>
 
 <script>
-  import page1 from 'Page1';
-  import page2 from 'Page2';
+  import startPage        from 'StartPage';
+  import homePage         from 'HomePage';
+  import checkWaterPage   from 'CheckWaterPage';
+  import checkFoodPage    from 'CheckFoodPage';
+  import waterControlPage from 'WaterControlPage';
+  import setClockPage     from 'SetClockPage';
 
   export default {
     data() {
       return {
-        pageStack: [page1]
+        pageStack: [startPage]
       }
     }
   }

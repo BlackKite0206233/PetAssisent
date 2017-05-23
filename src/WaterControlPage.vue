@@ -1,7 +1,6 @@
 <template>
   <v-ons-page>
-    <custom-toolbar :back-label="'Page 1'">Page 2</custom-toolbar>
-    <p style="text-align: center">This is the second page</p>
+    <custom-toolbar :img-name="'waterControl'"></custom-toolbar>
   </v-ons-page>
 </template>
 
@@ -19,3 +18,5 @@
     components: { customToolbar }
   }
 </script>
+
+

@@ -1,14 +1,15 @@
 <template>
   <v-ons-toolbar>
-    <div class="left">
-      <v-ons-back-button :on-click="pop">{{ backLabel }}</v-ons-back-button>
+    <div id="ctrlbar">
+    <div class="right">
+      <v-ons-back-button :on-click="pop"></v-ons-back-button>
     </div>
-    <div class="center"><slot></slot></div>
+    </div>
   </v-ons-toolbar>
 </template>
 
 <script>
   export default {
-    props: ['pop','backLabel']
+    props: ['pop', 'img-name']
   }
 </script>
