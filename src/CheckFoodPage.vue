@@ -3,6 +3,9 @@
     <custom-toolbar :imgName="'checkFood'"></custom-toolbar>
     <div id="calendar">
     </div>
+    <p>
+      {{imgName}}
+    </p>
   </v-ons-page>
 </template>
 

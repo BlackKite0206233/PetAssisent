@@ -1,9 +1,7 @@
 <template>
-  <v-ons-toolbar>
+  <v-ons-toolbar v-bind:style="{backgroundImage: 'url(../res/img/' + imgName + '.png)'}">
     <div id="ctrlbar">
-      <div class="right">
-        <v-ons-back-button>back</v-ons-back-button>
-      </div>
+        <v-ons-back-button></v-ons-back-button>
     </div>
     <p>
       {{imgName}}
