@@ -1,6 +1,6 @@
 <template>
   <v-ons-page>
-    <custom-toolbar :img-name="'checkFood'"></custom-toolbar>
+    <custom-toolbar :imgName="'checkFood'"></custom-toolbar>
     <div id="calendar">
     </div>
   </v-ons-page>

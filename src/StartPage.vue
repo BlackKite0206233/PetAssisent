@@ -1,12 +1,14 @@
-<template>
+<template id="start">
   <v-ons-page>
-    <p style="text-align: center">
-    </p>
+    <div style="text-align:center">
+      <v-ons-button ripple style="margin: 6px 0" @click="push">Hi</v-ons-button>
+    </div>
   </v-ons-page>
 </template>
 
 <script>
-  import homePage from 'homePage';
+  import homePage from 'HomePage';
+
   export default {
      methods: {
        push() {
@@ -14,6 +16,6 @@
        }
      },
      props: ['pageStack'],
-  }
+  };
 </script>
 

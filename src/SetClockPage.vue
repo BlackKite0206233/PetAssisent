@@ -1,6 +1,6 @@
 <template>
   <v-ons-page>
-    <custom-toolbar :img-name="'setClock'"></custom-toolbar>
+    <custom-toolbar :imgName="'setClock'"></custom-toolbar>
   </v-ons-page>
 </template>
 

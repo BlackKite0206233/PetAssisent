@@ -1,6 +1,6 @@
 <template>
   <v-ons-page>
-    <custom-toolbar :img-name="'waterControl'"></custom-toolbar>
+    <custom-toolbar :imgName="'waterControl'"></custom-toolbar>
   </v-ons-page>
 </template>
 
