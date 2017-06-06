@@ -1,2 +1,0 @@
-# PetAssistant
-PetAssistant Repository

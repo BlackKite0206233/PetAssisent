@@ -1,8 +1,8 @@
 {
-    "cordova-plugin-bluetooth-serial": {
+    "cordova-plugin-websql": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-bluetooth-serial"
+            "id": "cordova-plugin-websql"
         },
         "is_top_level": true,
         "variables": {}

@@ -1,0 +1,102 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "cordova-plugin-websql",
+        "scope": null,
+        "escapedName": "cordova-plugin-websql",
+        "name": "cordova-plugin-websql",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/home/samuel/Documents/Onsen-Vue/PetAssistant/node_modules"
+    ]
+  ],
+  "_from": "cordova-plugin-websql@latest",
+  "_id": "cordova-plugin-websql@0.0.10",
+  "_inCache": true,
+  "_location": "/cordova-plugin-websql",
+  "_nodeVersion": "4.1.1",
+  "_npmUser": {
+    "name": "vsmobile",
+    "email": "vscordovatools-admin@microsoft.com"
+  },
+  "_npmVersion": "2.14.4",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "cordova-plugin-websql",
+    "scope": null,
+    "escapedName": "cordova-plugin-websql",
+    "name": "cordova-plugin-websql",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-websql/-/cordova-plugin-websql-0.0.10.tgz",
+  "_shasum": "bec2aa8910e053dfeb2fc3b9fad408352541a8c0",
+  "_shrinkwrap": null,
+  "_spec": "cordova-plugin-websql",
+  "_where": "/home/samuel/Documents/Onsen-Vue/PetAssistant/node_modules",
+  "author": {
+    "name": "Microsoft Open Technologies Inc"
+  },
+  "bugs": {
+    "url": "https://github.com/MSOpenTech/cordova-plugin-websql/issues"
+  },
+  "cordova": {
+    "id": "cordova-plugin-websql",
+    "platforms": [
+      "wp8",
+      "windows8",
+      "windows"
+    ]
+  },
+  "dependencies": {},
+  "description": "Cordova Websql Plugin",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "bec2aa8910e053dfeb2fc3b9fad408352541a8c0",
+    "tarball": "https://registry.npmjs.org/cordova-plugin-websql/-/cordova-plugin-websql-0.0.10.tgz"
+  },
+  "gitHead": "d555e7b5cd87579f0704def8ffa1db7f1ae9a018",
+  "homepage": "https://github.com/MSOpenTech/cordova-plugin-websql#readme",
+  "keywords": [
+    "cordova",
+    "websql",
+    "ecosystem:cordova",
+    "cordova-windows8",
+    "cordova-windows",
+    "cordova-wp8"
+  ],
+  "license": "Apache 2.0",
+  "maintainers": [
+    {
+      "name": "msopentech",
+      "email": "msopentech@microsoft.com"
+    },
+    {
+      "name": "multidevicehybridapp",
+      "email": "vscordovatools-admin@microsoft.com"
+    },
+    {
+      "name": "vsmobile",
+      "email": "vscordovatools-admin@microsoft.com"
+    }
+  ],
+  "name": "cordova-plugin-websql",
+  "optionalDependencies": {},
+  "readme": "WebSQL plugin for Apache Cordova\r\n==================================\r\nAdds WebSQL functionality as Apache Cordova Plugin implemented on top of [Csharp-Sqlite library](https://code.google.com/p/csharp-sqlite/). Support of Windows 8.0, Windows 8.1, Windows Phone 8.0 and Windows Phone 8.1.\r\n\r\n### Sample usage ###\r\n\r\nPlugin follows [WebDatabase](http://www.w3.org/TR/webdatabase/) specification, no special changes are required. The following sample code creates `todo` table (if not exist) and adds new record. Complete example is available [here](https://github.com/MSOpenTech/cordova-plugin-websql/tree/master/test).\r\n```javascript\r\nvar dbSize = 5 * 1024 * 1024; // 5MB\r\n\r\nvar db = openDatabase(\"Todo\", \"\", \"Todo manager\", dbSize, function() {\r\n    console.log('db successfully opened or created');\r\n});\r\n\r\ndb.transaction(function (tx) {\r\n    tx.executeSql(\"CREATE TABLE IF NOT EXISTS todo(ID INTEGER PRIMARY KEY ASC, todo TEXT, added_on TEXT)\",\r\n        [], onSuccess, onError);\r\n    tx.executeSql(\"INSERT INTO todo(todo, added_on) VALUES (?,?)\", ['my todo item', new Date().toUTCString()], onSuccess, onError);\r\n});\r\n\r\nfunction onSuccess(transaction, resultSet) {\r\n    console.log('Query completed: ' + JSON.stringify(resultSet));\r\n}\r\n\r\nfunction onError(transaction, error) {\r\n    console.log('Query failed: ' + error.message);\r\n}\r\n```\r\n### Installation Instructions ###\r\n\r\nPlugin is [Apache Cordova CLI](http://cordova.apache.org/docs/en/edge/guide_cli_index.md.html) 3.x compliant.\r\n\r\n1. Make sure an up-to-date version of Node.js is installed, then type the following command to install the [Cordova CLI](https://github.com/apache/cordova-cli):\r\n\r\n        npm install -g cordova\r\n\r\n2. Create a project and add the platforms you want to support:\r\n\r\n        cordova create sampleApp\r\n        cd sampleApp\r\n        cordova platform add windows <- support of Windows 8.0, Windows 8.1 and Windows Phone 8.1\r\n        cordova platform add wp8 <- support of Windows Phone 8.0\r\n\r\n3. Add WebSql plugin to your project:\r\n\r\n        cordova plugin add cordova-plugin-websql\r\n\r\n4. Build and run, for example:\r\n\r\n        cordova build wp8\r\n        cordova emulate wp8\r\n\r\nTo learn more, read [Apache Cordova CLI Usage Guide](http://cordova.apache.org/docs/en/edge/guide_cli_index.md.html).\r\n\r\n### Pre-populated DBs support ###\r\nYou can copy a prepared DB file to the App' LocalFolder on the first run, for example (in terms of the sample app):\r\n```javascript\r\ninitialize: function () {\r\n    WinJS.Application.local.exists('Todo').done(\r\n        function (found) {\r\n            if (!found) {\r\n                return copyStartData('Todo');\r\n            }\r\n        }\r\n    );\r\n\r\n    function copyStartData(copyfile) {\r\n        return Windows.ApplicationModel.Package.current.installedLocation.getFolderAsync('www')\r\n        .then(function (www) {\r\n            return www.getFolderAsync('data')\r\n            .then(function (data) {\r\n                    return data.getFileAsync(copyfile).then(\r\n                        function (file) {\r\n                            if (file) {\r\n                                return file.copyAsync(WinJS.Application.local.folder);\r\n                            }\r\n                        });\r\n            });\r\n        });\r\n    }\r\n\r\n    ...\r\n},\r\n```\r\n\r\nThe snippet copies `www/data/Todo` pre-populated DB to the App' local folder if it did not exist.\r\n\r\nBased on [this StackOverflow question](http://stackoverflow.com/questions/15068295/deployment-of-localstate-folder).\r\n\r\n### Quirks ###\r\n* The display name, and size parameter values are not supported and will be ignored.\r\n\r\n* Due to SQLite limitations db version parameter to `openDatabase` and `changeVersion` methods should be an integer value or integer's string representation.\r\n\r\n* openDatabase on WP8 bypass version check by default. The reason of this is async nature of cordova calls to native APIs. To force version check and enable full versioning functionality set up the following variable:\r\n\r\n    ```javascript\r\n    window.__webSqlUseSyncConstructor = true;\r\n    ```\r\n\r\n* To use nested transactions you will need to pass parent transaction like this:\r\n    ```javascript\r\n    var db = openDatabase('test1.db', '1.0', 'testLongTransaction', 2 * 1024);\r\n    db.transaction(function (tx1) {\r\n        tx1.executeSql('DROP TABLE IF EXISTS foo');\r\n        tx1.executeSql('CREATE TABLE IF NOT EXISTS foo (id unique, text)');\r\n        ...\r\n        db.transaction(function (tx2) {\r\n            tx2.executeSql('INSERT INTO foo (id, text) VALUES (1, \"foobar\")');\r\n        }, null, null, null, null, false, tx1);\r\n        ...\r\n    }, null, null);\r\n    ```\r\n    `tx1` passed as the last argument in the nested `db.transaction` refers to the parent transaction.\r\n\r\n    Other arguments (`null, null, null, null, false, tx1`) are:\r\n    * the db.transaction error callback,\r\n    * the db.transaction success callback,\r\n    * preflight operation callback,\r\n    * postflight operation callback,\r\n    * readOnly flag,\r\n    * parent transaction - respectively.\r\n\r\n* To enable logging use:\r\n    ```javascript\r\n    window.__webSqlDebugModeOn = true;\r\n    ```\r\n\r\n### Copyrights ###\r\nCopyright (c) Microsoft Open Technologies, Inc. All Rights Reserved.\r\nLicensed under the Apache License, Version 2.0. See License.txt in the project root for license information.\r\n",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MSOpenTech/cordova-plugin-websql.git"
+  },
+  "scripts": {},
+  "version": "0.0.10"
+}

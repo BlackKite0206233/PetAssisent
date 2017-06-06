@@ -1,9 +1,11 @@
 {
-  "name": "onsenui-v2-vue-navigation",
+  "name": "onsenui-v2-vue-tabbar",
   "version": "2.2.7+20170328.1",
   "description": "",
   "dependencies": {
+    "cordova-plugin-websql": "0.0.10",
     "onsenui": "2.3.x",
+    "progressbar.js": "^1.0.1",
     "vue": "^2.1.10",
     "vue-onsenui": ">=2.0.0-beta.6"
   }
