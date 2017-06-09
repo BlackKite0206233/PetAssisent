@@ -10,7 +10,7 @@
       {{'What did ' + name + ' eat ?'}}
       <ons-row align="center" style="margin-top:5%;margin-bottom:5%">
         <ons-col width="50%" style="margin-left:20%">
-          <v-ons-input class="search" float 
+          <v-ons-input class="search" float placeholder="Search"
             :v-ons-model="filter"></v-ons-input>
         </ons-col>
         <v-ons-button class="searchBtn" ripple @click="search"></v-ons-button>
@@ -87,6 +87,9 @@
         return parseFloat(this.weight) * 65;
       }
     },
+    mounted:function() {
+      
+    },
     components: { dateBar, foodList, addFood }
   };
 </script>
@@ -148,6 +151,7 @@
     width: 90%;
     border-radius: 9%/50%;
     background-color: rgba(128, 128, 128, 0.1);
+    padding-left: 5%;
   }
 
   .searchBtn {

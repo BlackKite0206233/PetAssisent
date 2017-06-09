@@ -27,7 +27,7 @@
       </ons-col>
     </ons-row>
     <div class="Percentage">
-      <progress-bar :value="water / totalWater * 100" :colorIndex="1" ></progress-bar>
+      <progress-bar :value="waterPercent" :colorIndex="1" ></progress-bar>
     </div>
     <ons-row align="center" class="water" style="margin-top:5%">
       <ons-col width="35%" class="data-col-left">
@@ -38,7 +38,7 @@
       </ons-col>
     </ons-row>
     <div class="Percentage">
-      <progress-bar :value="food / totalFood * 100" :colorIndex="0" ></progress-bar>
+      <progress-bar :value="foodPercent" :colorIndex="0" ></progress-bar>
     </div>
 
     <hr style="width:80%; margin-top:5%" class="my-hr">
@@ -70,10 +70,10 @@
   export default {
     data() {
       return {
-        imagePath: require('../www/assets/img/default.png'),
-        name: 'latte',
-        age: '3',
-        weight: '4.0',
+        imagePath: '',
+        name: '',
+        age: '',
+        weight: '',
         water: 58,
         wRemain: 58,
         food: 191,
@@ -87,7 +87,48 @@
       },
       totalWater() {
         return parseFloat(this.weight) * 40;
+      },
+      foodPercent() {
+        return Math.round(this.food / this.totalFood * 100);
+      },
+      waterPercent() {
+        return Math.round(this.water / this.totalWater * 100);
       }
+    },
+    mounted: function() {
+      var self = this;
+
+      var db;
+      var request = window.indexedDB.open("App", 5);
+
+      request.onerror = function(event) {
+        self.$ons.notification.alert("IndexedDB didn't work");
+      };
+      request.onsuccess = function(event) {
+        db = event.target.result;
+        
+        var transaction = db.transaction("account", "readwrite");
+        var account = transaction.objectStore("account");                    
+        var request = account.get(1);
+        
+        request.onsuccess = function (evt) {
+          var data = request.result;
+          self.imagePath = data.imagePath;
+          self.name = data.userName;
+
+          var date = new Date();
+          var birth = new Date(data.petBirthday);
+          
+          self.age = Math.floor(((date.getFullYear() - birth.getFullYear()) * 10000 + 
+                     (date.getMonth() - birth.getMonth()) * 100 +
+                     (date.getDate() - birth.getDate())) / 10000);
+          self.weight = data.petWeight;                  
+        };
+        request.onerror = function (evt) {
+          self.$ons.notification("error");                      
+        };
+      };
+
     },
     components: { progressBar, progressCircle }
   }

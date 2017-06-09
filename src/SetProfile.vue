@@ -15,13 +15,13 @@
         </v-ons-button>
       </ons-row>
       <ons-row align="center" class="form-row" v-for="item in items">
-        <ons-col width="50%" class="label">
+        <ons-col width="30%" class="label">
           {{item.message}}
         </ons-col>
-        <ons-col width="50%" style="text-align: left; padding-left:5%">
-          <v-ons-input class="input" float 
+        <ons-col width="60%">
+          <v-ons-input class="text-input--underbar profile-input" float 
             :placeholder="item.holder" 
-            :v-ons-model="item.value"  
+            v-model="item.value"  
             :type="item.type"></v-ons-input>
         </ons-col>
       </ons-row>
@@ -80,7 +80,41 @@ export default {
       //TODO: change pic
     },
     submit() {
-      this.modalVisible = false;
+      var self = this;
+      var data = [];
+      for(var i = 0; i < this.items.length; i++) {
+        var value = this.items[i].value.srcElement.value;
+        if(!value || value == '') {
+          self.$ons.notification.alert('資料欄位請勿留空');
+          return -1;
+        }
+        data.push(value);
+      }
+      var db;
+      var request = window.indexedDB.open("App", 5);
+
+      request.onerror = function(event) {
+        self.$ons.notification("IndexedDB didn't work");
+      };
+      request.onsuccess = function(event) {
+        db = event.target.result;
+        
+        var transaction = db.transaction("account", "readwrite");
+        var account = transaction.objectStore("account");                    
+        var request = account.add({ userName: data[0],
+                                    email: data[1], 
+                                    petName:data[2],
+                                    petBirthday: data[3],
+                                    petWeight: data[4],
+                                    imagePath: self.imagePath });
+
+        request.onsuccess = function (evt) {
+            self.$emit('close');                        
+        };
+        request.onerror = function (evt) {
+            self.$ons.notification.alert("error");                      
+        };
+      };
     }
   }
 }
@@ -101,14 +135,17 @@ export default {
   }
 
   .label {
-    text-align: right;
-    padding-right: 5%
+    text-align: left;
+    margin-left: 10%;
+    padding-left: 3%;
   }
 
-  .input {
-    border: 1px solid rgba(128, 128, 128, 0.5);
-    width: 90%;
-    border-radius: 5%/20%;
+  .text-input--underbar {
+    width: 60%;
+  }
+
+  .text-input--underbar input {
+    font-family: Skia !important;
   }
 
   #bottom {

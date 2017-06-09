@@ -8,39 +8,64 @@
 
     <div id="timer-body" style="margin-top:-3%">
       <ons-row align="center" class="timer-row" v-for="item in items">
-        <timer-list :time="item.time" :date="item.date" :isOn="item.isOn"></timer-list>
+        <timer-list :hr="item.hr" :min="item.min" :date="item.date" :isOn="item.isOn"></timer-list>
       </ons-row>
       <v-ons-button id="timer-add" @click="add" ripple></v-ons-button>
     </div>
+
+    <add-timer :modalVisible="modalVisible" v-on:close="close"></add-timer>
   </v-ons-page>
 </template>
 
 <script>
   import timerList from 'TimerList';
+  import addTimer from 'AddTimer';
 
   export default {
     data() {
       return {
+        modalVisible: false,
         items: [
           {
-            time: '07:30',
-            date: [0, 1, 2, 3, 4, 5, 6],
-            isOn: false
+            hr: {
+              value: 7
+            },
+            min: {
+              value: 30
+            },
+            date: {
+              value: [0, 1, 2, 3, 4, 5]
+            },
+            isOn: {
+              value: false
+            }
           },
           {
-            time: '10:30',
-            date: [0, 6],
-            isOn: false
+            hr: {
+              value: 10
+            },
+            min: {
+              value: 30
+            },
+            date: {
+              value: [0, 6]
+            },
+            isOn: {
+              value: true
+            }
           }
         ]
       }
     },
     methods: {
       add() {
-
+        this.modalVisible = true;
+      },
+      close() {
+        this.modalVisible = false;
       }
     },
-    components: { timerList }
+    components: { timerList, addTimer }
   }
 </script>
 
@@ -51,7 +76,7 @@
   }
 
   #timer-body {
-    height: 80%;
+    height: 60%;
     width: 100%;
     text-align: center;
   }
@@ -84,7 +109,7 @@
   }
 
   .timer-row {
-    height: 25%;
+    height: 35%;
     width: 85%;
     margin-left: 7.5%;
     margin-top: 2.5%;

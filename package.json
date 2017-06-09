@@ -3,10 +3,14 @@
   "version": "2.2.7+20170328.1",
   "description": "",
   "dependencies": {
+    "cordova-plugin-datepicker": "^0.9.3",
     "cordova-plugin-websql": "0.0.10",
+    "hammerjs": "^2.0.8",
+    "jquery": "^3.2.1",
     "onsenui": "2.3.x",
     "progressbar.js": "^1.0.1",
     "vue": "^2.1.10",
-    "vue-onsenui": ">=2.0.0-beta.6"
+    "vue-onsenui": ">=2.0.0-beta.6",
+    "vue-rate-it": "^1.1.5"
   }
 }

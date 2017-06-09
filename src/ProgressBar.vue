@@ -1,11 +1,10 @@
-<template>
+<template id="">
   <div>
   </div>
 </template>
 
 <script>
   var progressBar = require('progressbar.js');
-
   export default {
     props: ['colorIndex', 'value'],
     data() {
@@ -13,7 +12,8 @@
         color: [
           'rgba(255, 60, 120, 0.7)',
           'rgba(0, 128, 255, 0.7)'
-        ]
+        ],
+        line: null
       }
     },
     computed: {
@@ -22,8 +22,10 @@
       }
     },
     mounted: function() {
-      var line = new progressBar.Line(this.$el, {
-          color: this.getColor,
+      var self = this;
+      setTimeout(function() {
+        self.line = new progressBar.Line(self.$el, {
+          color: self.getColor,
           strokeWidth: 5,
           svgStyle: {
             display: 'block',
@@ -36,8 +38,13 @@
           autoStyleContainer: true
 
         });
-
-        line.animate(this.value / 100);
+        line.animate(self.value / 100);
+      }, 0);
+    },
+    watch: {
+      value: function() {
+        this.line.animate(this.value / 100);
+      }
     }
   }
 </script>

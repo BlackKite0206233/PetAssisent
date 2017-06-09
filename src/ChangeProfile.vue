@@ -18,13 +18,13 @@
         </v-ons-button>
       </ons-row>
       <ons-row align="center" class="form-row" v-for="item in items">
-        <ons-col width="50%" class="label">
+        <ons-col width="30%" class="label">
           {{item.message}}
         </ons-col>
-        <ons-col width="50%" style="text-align: left; padding-left:5%">
-          <v-ons-input class="input" float 
+        <ons-col width="60%">
+          <v-ons-input class="text-input--underbar" float 
             :placeholder="item.holder" 
-            :v-ons-model="item.value"  
+            v-model="item.value"  
             :type="item.type"></v-ons-input>
         </ons-col>
       </ons-row>

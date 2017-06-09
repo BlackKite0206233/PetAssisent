@@ -107,7 +107,13 @@ module.exports = {
       template: 'src/public/index.html.ejs',
       chunksSortMode: 'dependency'
     }),
-    new ProgressBarPlugin()
+    new ProgressBarPlugin(),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jquery: 'jquery',
+      'window.jQuery': 'jquery',
+      jQuery: 'jquery'
+    })
   ],
 
   resolveLoader: {

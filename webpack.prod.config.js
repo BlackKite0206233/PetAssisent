@@ -131,7 +131,13 @@ module.exports = {
       from: path.join(__dirname, 'src', 'public'),
       ignore: ['index.html.ejs']
     }]),
-    new ProgressBarPlugin()
+    new ProgressBarPlugin(),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jquery: 'jquery',
+      'window.jQuery': 'jquery',
+      jQuery: 'jquery'
+    })
   ],
 
   resolveLoader: {

@@ -6,7 +6,7 @@
           Time
         </ons-col>
         <ons-col style="height:100%;text-align:right">
-          {{time}}
+          {{getHr + ':' + getMin}}
         </ons-col>
       </ons-row>
 
@@ -27,34 +27,59 @@
         <ons-col width="80%" style="height:100%"></ons-col>
         <ons-col style="height:100%">
           <v-ons-switch input-id="collar"
-              v-ons-model="isOn" class="my-collar"></v-ons-switch>
+              v-ons-model="isOn.value" class="my-collar"></v-ons-switch>
         </ons-col>
       </ons-row>
     </ons-col>
 
     <ons-col style="height:100%">
+      <v-ons-button class="timer-list-btn" ripple @click="edit"></v-ons-button>
     </ons-col>
+
+    <edit-timer :modalVisible="modalVisible" :hr="hr" :min="min" :date="date" v-on:close="close"></edit-timer>
   </ons-row>
 </template>
 
 <script>
-export default {
-  props: ['time', 'date', 'isOn'],
-  data() {
-    return {
-      day: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-    }
-  },
-  computed: {
-    getDate() {
-      var str = "";
-      for(var i = 0; i < this.date.length; i++)
-        str += this.day[this.date[i]] + '/';
+  import editTimer from 'EditTimer';
 
-      return str.substring(0, str.length - 1);
-    }
+  export default {
+    props: ['hr', 'min', 'date', 'isOn'],
+    data() {
+      return {
+        modalVisible: false,
+        day: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+      }
+    },
+    computed: {
+      getHr() {
+        return (this.hr.value < 10 ? '0' : '') + this.hr.value;
+      },
+      getMin() {
+        return (this.min.value < 10 ? '0' : '') + this.min.value;
+      },
+      getDate() {
+        var str = "";
+
+        if(this.date.value.length == 7)
+          return 'Every Day';
+
+        for(var i = 0; i < this.date.value.length; i++)
+          str += this.day[this.date.value[i]] + ', ';
+
+        return str.substring(0, str.length - 2);
+      }
+    },
+    methods: {
+      edit() {
+        this.modalVisible = true;
+      },
+      close() {
+        this.modalVisible = false;
+      }
+    },
+    components: { editTimer }
   }
-}
 </script>
 
 <style>
@@ -63,6 +88,17 @@ export default {
     height: 100%;
     border-radius: 5%/15%;
     background-color: rgba(192, 192, 192, 0.3);
+  }
+
+  .timer-list-btn {
+    left: 10%;
+    height: 100%;
+    width: 80%;
+    background-color: transparent;
+    background-image: url('../www/assets/img/next.png');
+    background-size: 30% 20%;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
   }
 
   .time-date {
