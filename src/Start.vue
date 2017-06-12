@@ -5,11 +5,11 @@
        Pet Assistant
      </ons-col>
    </ons-row>
-   <ons-row class="row">
+   <!--<ons-row class="row">
      <ons-col class="col" v-if="isRenderBtn">
        <v-ons-button ripple @click="push">press</v-ons-button>
      </ons-col>
-   </ons-row>
+   </ons-row>-->
    <set-profile :modalVisible="modalVisible" v-on:close="close"></set-profile>
   </v-ons-page>
 </template>
@@ -25,6 +25,7 @@
       },
       close() {
         this.modalVisible = false;
+        this.push();
       }
     },
     props: ['pageStack'],
@@ -54,10 +55,9 @@
       var accountRepository = require('./Repositories/AccountRepository');
 
       setTimeout(function() {
-        self.isRenderBtn = true;
-
-        accountRepository.getAccountById(1).catch(function(error) {
-          console.log(error);
+        accountRepository.getAccountById(1).then(function() {
+          self.push();
+        }).catch(function(error) {
           self.modalVisible = true;
         });
       }, 1000);
