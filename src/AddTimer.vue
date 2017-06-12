@@ -56,9 +56,12 @@
       }
     },
     created: function() {
-      var time = new Date();
-      this.hour.value = time.getHours();
-      this.minute.value = time.getMinutes();
+      var self = this;
+      setInterval(function() {
+        var time = new Date();
+        self.hour.value = time.getHours();
+        self.minute.value = time.getMinutes();
+      }, 60000);
     },
     components: { datePicker, dayList }
   }

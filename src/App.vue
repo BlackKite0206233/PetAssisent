@@ -1,6 +1,6 @@
 <template>
   <v-ons-page>
-    <ctrlbar :title="title" :colorIndex="tabs[this.activeIndex].colorIndex"></ctrlbar>
+    <ctrlbar :title="title" :colorIndex="tabs[this.activeIndex].colorIndex" v-on:update="update"></ctrlbar>
 
     <v-ons-tabbar position="auto"
       :tabs="tabs"
@@ -68,6 +68,11 @@
     methods: {
       md() {
         return this.$ons.platform.isAndroid();
+      },
+      update() {
+        this.$children[0].$children[1].$children[0].$children[0].$children[0].$children[0].$forceUpdate();
+        this.$children[0].$children[1].$children[1].$children[0].$children[0].$children[0].$forceUpdate();
+        this.$children[0].$children[1].$children[2].$forceUpdate();
       }
     },
     computed: {

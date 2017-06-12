@@ -30,6 +30,16 @@
 			  $("#minutes").drum('setIndex', _min); 	
       }
     },
+    watch: {
+      choseHr: function() {
+        var self = this;
+        $("#hours").drum('setIndex', self.choseHr.value); 
+      },
+      choseMin: function() {
+        var self = this;
+        $("#minutes").drum('setIndex', self.choseMin.value); 	
+      }
+    },
     mounted: function() {
       var self = this;
       
@@ -63,7 +73,7 @@
     border-top: solid 1px #CCC;
     border-bottom: solid 1px #CCC;
     position: absolute;
-    top: 12.5%;
+    top: 13%;
     left: 10%;
     width: 80%;
     height: 4%;
@@ -97,7 +107,9 @@
   }
 
   div.dial.down {
+    top: 0%;
     margin-left: -7%;
+    margin-top: 70%;
   }
 
   div.dial.up {

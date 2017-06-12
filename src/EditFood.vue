@@ -42,7 +42,7 @@
           {{petName}}'s Reaction
         </ons-col>
         <ons-col width="50%" class="food-data-col">
-          
+          {{reaction}}        
         </ons-col>
       </ons-row>
       <hr class="my-hr" style="width:90%">
@@ -62,20 +62,48 @@
 
 <script>
 export default {
-  props: ['modalVisible'],
+  props: ['foodId', 'modalVisible'],
   data() {
     return {
-      foodName: 'a',
-      cal: '12',
-      serving: '0,5',
-      note: 'hi',
-      petName: 'Latte',
+      foodName: '',
+      cal: 0,
+      serving: '',
+      reaction: 0,
+      note: '',
+      petName: '',
     }
   },
   methods: {
     deleteFood() {
-      this.$emit('close');
+      var foodRepository = require('./Repositories/FoodRepository');
+      var self = this;
+
+      foodRepository.deleteFood(self.foodId).then(function() {
+        self.$emit('close');
+      }).catch(function(error) {
+        self.$ons.notification.alert("cannot delete");
+      })
     }
+  },
+  mounted: function() {
+    var accountRepository = require('./Repositories/AccountRepository');
+    var foodRepository = require('./Repositories/FoodRepository');
+    var self = this;
+
+    accountRepository.getAccountById(1).then(function(result) {
+      self.petName = result.petName;
+
+      foodRepository.getFoodById(self.foodId).then(function(result) {
+        self.foodName = result.name;
+        self.cal = result.cal;
+        self.serving = result.serving;
+        self.reaction = result.reaction;
+        self.note = result.note;
+      });
+    }).catch(function(error) {
+      self.$ons.notification.alert("webSQL didn't work");
+    })
+    
   }
 }
 </script>

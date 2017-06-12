@@ -9,7 +9,7 @@
         <font style="font-weight:lighter">kcal</font>
       </ons-col>
     </ons-row>
-    <edit-food :modalVisible="modalVisible" v-on:close="close"></edit-food>
+    <edit-food :foodId="foodId" :modalVisible="modalVisible" v-on:close="close"></edit-food>
   </v-ons-button>
 </template>
 
@@ -17,7 +17,7 @@
   import editFood from 'EditFood';
 
   export default {
-    props: ['name', 'cal'],
+    props: ['foodId', 'name', 'cal'],
     data() {
       return {
         modalVisible: false,
@@ -37,6 +37,7 @@
         this.modalVisible = true;
       },
       close() {
+        this.$emit('delete');
         this.modalVisible = false;
       }
     },

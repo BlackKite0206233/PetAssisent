@@ -6,7 +6,7 @@
           new food
         </div>
         <div class="right">
-          <v-ons-button class="close" ripple @click="$emit('close')">cancel</v-ons-button>
+          <v-ons-button class="close" ripple @click="close">cancel</v-ons-button>
         </div>
       </v-ons-toolbar>
       
@@ -15,9 +15,9 @@
           Name of Food
         </ons-col>
         <ons-col width="50%">
-          <v-ons-input class="text-input--underbar" float 
+          <input class="text-input--underbar" float 
             placeholder="Name of Food" 
-            v-model="foodName"></v-ons-input>
+            v-model="foodName"></input>
         </ons-col>
       </ons-row>
 
@@ -26,9 +26,9 @@
           Calories
         </ons-col>
         <ons-col width="50%">
-          <v-ons-input class="text-input--underbar" float 
+          <input class="text-input--underbar" float 
             placeholder="Calories" 
-            v-model="cal"></v-ons-input>
+            v-model="cal"></input>
         </ons-col>
       </ons-row>
 
@@ -37,9 +37,9 @@
           Number of Servings
         </ons-col>
         <ons-col width="50%">
-          <v-ons-input class="text-input--underbar" float 
+          <input class="text-input--underbar" float 
             placeholder="Number" 
-            v-model="serving"></v-ons-input>
+            v-model="serving"></input>
         </ons-col>
       </ons-row>
 
@@ -48,7 +48,9 @@
           {{petName}}'s Reaction
         </ons-col>
         <ons-col width="50%">
-          
+          <input class="text-input--underbar" float 
+            placeholder="reaction(0~5)" 
+            v-model="reaction"></input>
         </ons-col>
       </ons-row>
       <hr class="my-hr" style="width:90%">
@@ -76,12 +78,42 @@ export default {
       foodName: '',
       cal: '',
       serving: '',
+      reaction: '',
       note: '',
       petName: 'Latte',
     }
   },
   methods: {
     addFood() {
+      var foodRepository = require('./Repositories/FoodRepository');
+      var self = this;
+
+      var name = (!this.foodName ? '' : this.foodName);
+      var cal = (!this.cal ? '' : this.cal);
+      var serving = (!this.serving ? '' : this.serving);
+      var reaction = (!this.reaction ? '' : this.reaction);
+      var note = (!this.note ? '' : this.note);
+
+      this.foodName = this.cal = this.serving = this.reaction = this.note = '';
+
+      var data = {
+        name: name,
+        cal: cal,
+        serving: serving,
+        reaction: reaction,
+        note: note,
+      }
+
+      foodRepository.insert(data).then(function() {
+        self.$emit('close');
+      }).catch(function(error) {
+        console.log(error);
+        self.$ons.notification.alert("webSQL didn't work");
+      });
+      
+    },
+    close() {
+      this.foodName = this.cal = this.serving = this.reaction = this.note = '';
       this.$emit('close');
     }
   }

@@ -3,6 +3,8 @@
   "version": "2.2.7+20170328.1",
   "description": "",
   "dependencies": {
+    "bluebird": "^3.5.0",
+    "cordova-plugin-bluetooth-serial": "^0.4.7",
     "cordova-plugin-datepicker": "^0.9.3",
     "cordova-plugin-websql": "0.0.10",
     "hammerjs": "^2.0.8",

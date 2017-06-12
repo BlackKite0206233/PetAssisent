@@ -95,40 +95,33 @@
         return Math.round(this.water / this.totalWater * 100);
       }
     },
-    mounted: function() {
-      var self = this;
+    methods: {
+      getData() {
+        var accountRepository = require('./Repositories/AccountRepository');
+        var self = this;
 
-      var db;
-      var request = window.indexedDB.open("App", 5);
-
-      request.onerror = function(event) {
-        self.$ons.notification.alert("IndexedDB didn't work");
-      };
-      request.onsuccess = function(event) {
-        db = event.target.result;
-        
-        var transaction = db.transaction("account", "readwrite");
-        var account = transaction.objectStore("account");                    
-        var request = account.get(1);
-        
-        request.onsuccess = function (evt) {
-          var data = request.result;
-          self.imagePath = data.imagePath;
-          self.name = data.userName;
+        accountRepository.getAccountById(1).then(function(result) {
+          self.imagePath = result.imagePath;
+          self.name = result.petName;
 
           var date = new Date();
-          var birth = new Date(data.petBirthday);
+          var birth = new Date(result.petBirth);
           
           self.age = Math.floor(((date.getFullYear() - birth.getFullYear()) * 10000 + 
-                     (date.getMonth() - birth.getMonth()) * 100 +
-                     (date.getDate() - birth.getDate())) / 10000);
-          self.weight = data.petWeight;                  
-        };
-        request.onerror = function (evt) {
-          self.$ons.notification("error");                      
-        };
-      };
-
+                      (date.getMonth() - birth.getMonth()) * 100 +
+                      (date.getDate() - birth.getDate())) / 10000);
+          self.weight = result.petWeight;   
+        }).catch(function(error) {
+          console.log(error);
+          self.$ons.notification.alert("error");  
+        });
+      }
+    },
+    updated: function() {
+      this.getData();
+    },
+    mounted: function() {
+      this.getData();
     },
     components: { progressBar, progressCircle }
   }

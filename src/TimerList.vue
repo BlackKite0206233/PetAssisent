@@ -61,12 +61,15 @@
       getDate() {
         var str = "";
 
-        if(this.date.value.length == 7)
-          return 'Every Day';
+        var flag = true;
+        for(var i = 0; i < this.date.value.length && flag; i++)
+         flag = this.date.value[i];
+        if(flag)
+          return "Every Day";
 
         for(var i = 0; i < this.date.value.length; i++)
-          str += this.day[this.date.value[i]] + ', ';
-
+          if(this.date.value[i])
+            str += this.day[i] + ', ';
         return str.substring(0, str.length - 2);
       }
     },

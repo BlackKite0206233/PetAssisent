@@ -68,12 +68,22 @@
     methods: {
       push() {
         this.pageStack.push(waterData);
+      },
+      update() {
+        var accountRepository = require('./Repositories/AccountRepository');
+        var self = this;
+        
+        accountRepository.getAccountById(1).then(function(result) {
+          self.weight = result.petWeight;
+        }).catch(function(error) {
+          self.$ons.notification.alert("webSQL didn't work");
+        });
       }
     },
     props: ['pageStack'],
     data() {
       return {
-        weight: '4.0',
+        weight: '',
         water: 58,
         wRemain: 58,
         lastWaterDay: '1',
@@ -87,6 +97,12 @@
       totalWater() {
         return parseFloat(this.weight) * 40;
       }
+    },
+    updated: function() {
+      this.update();
+    },
+    mounted: function() {
+      this.update();
     },
     components: { progressCircle, dateBar }
   };

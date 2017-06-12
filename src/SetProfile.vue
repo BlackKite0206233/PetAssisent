@@ -14,16 +14,62 @@
           <img class="pic" src="../www/assets/img/camera.png">
         </v-ons-button>
       </ons-row>
-      <ons-row align="center" class="form-row" v-for="item in items">
+      <ons-row align="center" class="form-row">
         <ons-col width="30%" class="label">
-          {{item.message}}
+          {{items[0].message}}
         </ons-col>
         <ons-col width="60%">
-          <v-ons-input class="text-input--underbar profile-input" float 
-            :placeholder="item.holder" 
-            v-model="item.value"  
-            :type="item.type"></v-ons-input>
+          <input class="text-input--underbar" float 
+            :placeholder="items[0].holder" 
+            v-model="items[0].value"  
+            type="text"></input>
         </ons-col>
+      </ons-row>
+      <ons-row align="center" class="form-row">
+        <ons-col width="30%" class="label">
+          {{items[1].message}}
+        </ons-col>
+        <ons-col width="60%">
+          <input class="text-input--underbar" float 
+            :placeholder="items[1].holder" 
+            v-model="items[1].value"  
+            type="text"></input>
+        </ons-col>
+      </ons-row>
+      <ons-row align="center" class="form-row">
+        <ons-col width="30%" class="label">
+          {{items[2].message}}
+        </ons-col>
+        <ons-col width="60%">
+          <input class="text-input--underbar" float 
+            :placeholder="items[2].holder" 
+            v-model="items[2].value"  
+            type="text"></input>
+        </ons-col>
+      </ons-row>
+      <ons-row align="center" class="form-row">
+        <ons-col width="30%" class="label">
+          {{items[3].message}}
+        </ons-col>
+        <ons-col width="60%">
+          <input class="text-input--underbar" float 
+            :placeholder="items[3].holder" 
+            v-model="items[3].value"  
+            type="date"></input>
+        </ons-col>
+      </ons-row>
+      <ons-row align="center" class="form-row">
+        <ons-col width="30%" class="label">
+          {{items[4].message}}
+        </ons-col>
+        <ons-col width="60%">
+          <input class="text-input--underbar" float 
+            :placeholder="items[4].holder" 
+            v-model="items[4].value"  
+            type="text"></input>
+        </ons-col>
+      </ons-row>
+      
       </ons-row>
       <div></div>
       <ons-row id="bottom" align="center">
@@ -45,32 +91,27 @@ export default {
         {
           message: 'Your Name',
           holder: 'your name',
-          value: '',
-          type: 'text'
+          value: ''
         },
         {
           message: 'Your Email',
           holder: 'your email',
-          value: '',
-          type: 'text'
+          value: ''
         },
         {
           message: 'Pet\'s Name',
           holder: 'pet\'s name',
-          value: '',
-          type: 'text'
+          value: ''
         },
         {
           message: 'Pet\'s Birthday',
           holder: 'pet\'s birthday (m/d/y)',
-          value: '',
-          type: 'date'
+          value: ''
         },
         {
           message: 'Pet\'s Weight',
           holder: 'pet\'s weight (kg)',
-          value: '',
-          type: 'text'
+          value: ''
         }
       ]
     }
@@ -80,41 +121,34 @@ export default {
       //TODO: change pic
     },
     submit() {
+      var accountRepository = require('./Repositories/AccountRepository');
       var self = this;
-      var data = [];
+      var tmp = [];
       for(var i = 0; i < this.items.length; i++) {
-        var value = this.items[i].value.srcElement.value;
+        var value = this.items[i].value;
         if(!value || value == '') {
           self.$ons.notification.alert('資料欄位請勿留空');
           return -1;
         }
-        data.push(value);
+        tmp.push(value);
       }
-      var db;
-      var request = window.indexedDB.open("App", 5);
+      
+      var data = {
+        userName: tmp[0],
+        userEmail: tmp[1],
+        petName: tmp[2],
+        petBirth: tmp[3],
+        petWeight: tmp[4],
+        imagePath: this.imagePath
+      }
+      accountRepository.insert(data).then(function() {
+        for(var i = 0; i < self.items.length; i++)
+          self.items[i].value = '';
 
-      request.onerror = function(event) {
-        self.$ons.notification("IndexedDB didn't work");
-      };
-      request.onsuccess = function(event) {
-        db = event.target.result;
-        
-        var transaction = db.transaction("account", "readwrite");
-        var account = transaction.objectStore("account");                    
-        var request = account.add({ userName: data[0],
-                                    email: data[1], 
-                                    petName:data[2],
-                                    petBirthday: data[3],
-                                    petWeight: data[4],
-                                    imagePath: self.imagePath });
-
-        request.onsuccess = function (evt) {
-            self.$emit('close');                        
-        };
-        request.onerror = function (evt) {
-            self.$ons.notification.alert("error");                      
-        };
-      };
+        self.$emit('close');
+      }).catch(function(error) {
+        self.$ons.notification.alert("webSQL didn't work");
+      });
     }
   }
 }
@@ -142,6 +176,9 @@ export default {
 
   .text-input--underbar {
     width: 60%;
+    font-family: Skia !important;
+    text-align: right;
+    font-weight: lighter;
   }
 
   .text-input--underbar input {

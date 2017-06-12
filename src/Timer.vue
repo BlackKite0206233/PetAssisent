@@ -8,7 +8,7 @@
 
     <div id="timer-body" style="margin-top:-3%">
       <ons-row align="center" class="timer-row" v-for="item in items">
-        <timer-list :hr="item.hr" :min="item.min" :date="item.date" :isOn="item.isOn"></timer-list>
+        <timer-list :timerId="item.id" :hr="item.hr" :min="item.min" :date="item.date" :isOn="item.isOn"></timer-list>
       </ons-row>
       <v-ons-button id="timer-add" @click="add" ripple></v-ons-button>
     </div>
@@ -27,28 +27,14 @@
         modalVisible: false,
         items: [
           {
-            hr: {
+            hr: { 
               value: 7
             },
             min: {
               value: 30
             },
             date: {
-              value: [0, 1, 2, 3, 4, 5]
-            },
-            isOn: {
-              value: false
-            }
-          },
-          {
-            hr: {
-              value: 10
-            },
-            min: {
-              value: 30
-            },
-            date: {
-              value: [0, 6]
+              value: [true, true, true, true, true, true, true]
             },
             isOn: {
               value: true
@@ -60,10 +46,24 @@
     methods: {
       add() {
         this.modalVisible = true;
+        //this.update();
       },
       close() {
         this.modalVisible = false;
-      }
+      },
+      update() {
+        // var timerRepository = require('./Repositories/TimerRepository');
+        // var self = this;
+
+        // timerRepository.getAll().then(function(result) {
+        //   self.items = result;
+        // }).catch(function(error) {
+        //   self.$ons.notification.alert("webSQL didn't work");
+        // });
+      },
+    },
+    mounted: function() {
+      //this.update();
     },
     components: { timerList, addTimer }
   }

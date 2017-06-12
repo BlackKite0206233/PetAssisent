@@ -27,6 +27,7 @@
     methods: {
       close() {
         this.modalVisible = false;
+        this.$emit('update');
       },
       changeProfile() {
         this.actionSheetVisible = false;

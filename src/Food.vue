@@ -18,7 +18,7 @@
       
       <div id="food-list">
         <ons-row align="center" class="list-row" v-for="item in items">
-          <food-list :name="item.name" :cal="item.cal"></food-list>
+          <food-list :foodId="item.id" :name="item.name" :cal="item.cal" v-on:delete="update"></food-list>
         </ons-row>
         <v-ons-button id="food-add" @click="add" ripple></v-ons-button>
       </div>
@@ -60,26 +60,33 @@
       },
       close() {
         this.modalVisible = false;
+        this.update();
+      },
+      update() {
+        var foodRepository = require('./Repositories/FoodRepository');
+        var self = this;
+
+        foodRepository.getAll().then(function(result) {
+          self.items = result;
+
+          self.food = 0;
+          for(var i = 0; i < self.items.length; i++) {
+            self.food += parseInt(self.items[i].cal);
+          }
+        }).catch(function(error) {
+          self.$ons.notification.alert("webSQL didn't work");
+        });
       }
     },
     props: ['pageStack'],
     data() {
       return {
         modalVisible: false,
-        name: 'latte',
+        name: '',
         filter: '',
-        weight: '4.0',
-        food: 191,
-        items: [
-          {
-            name: 'ZiwiPeak Lamb',
-            cal: 93
-          },
-          {
-            name: 'Wellness Beef & Salmon',
-            cal: 98
-          }
-        ]
+        weight: '',
+        food: 0,
+        items: []
       }
     },
     computed: {
@@ -87,7 +94,29 @@
         return parseFloat(this.weight) * 65;
       }
     },
+    updated: function() {
+      var accountRepository = require('./Repositories/AccountRepository');
+      var self = this;
+      
+      accountRepository.getAccountById(1).then(function(result) {
+        self.name = result.petName;
+        self.weight = result.petWeight;
+      }).catch(function(error) {
+        self.$ons.notification.alert("webSQL didn't work");
+      });
+    },
     mounted:function() {
+      var accountRepository = require('./Repositories/AccountRepository');
+      var self = this;
+      
+      accountRepository.getAccountById(1).then(function(result) {
+        self.name = result.petName;
+        self.weight = result.petWeight;
+        
+        self.update();
+      }).catch(function(error) {
+        self.$ons.notification.alert("webSQL didn't work");
+      });
       
     },
     components: { dateBar, foodList, addFood }

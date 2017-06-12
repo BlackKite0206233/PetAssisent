@@ -34,52 +34,32 @@
         isRenderBtn: false
       }
     },
+    created: function() {
+      var self = this;
+      var databaseSetting = require('./Repositories/DatabaseSetting');
+
+      databaseSetting.databaseInit().catch(function() {
+        self.$ons.notification.alert("webSql didn't work");
+        if (navigator.app) {
+          navigator.app.exitApp();
+        } else if (navigator.device) {
+          navigator.device.exitApp();
+        } else {
+          window.close();
+        }
+      })
+    },
     mounted: function() {
       var self = this;
-      var db;
-      var request = window.indexedDB.open("App", 5);
-
-      request.onerror = function(event) {
-        self.$ons.notification.alert("IndexedDB didn't work");
-      };
-      request.onsuccess = function(event) {
-        db = event.target.result;
-      };
-      request.onupgradeneeded = function(event) {
-        var account = event.currentTarget.result.createObjectStore("account", { keyPath: "id", autoIncrement: true });
-        account.createIndex("userName", "userName", { unique: false });
-        account.createIndex("email", "email", { unique: false });
-        account.createIndex("petName", "petName", { unique: false });
-        account.createIndex("petBirthday", "petBirthday", { unique: false });
-        account.createIndex("petWeight", "petWeight", { unique: false });
-        account.createIndex("imagePath", "imagePath", { unique: false });
-
-        var food = event.currentTarget.result.createObjectStore("food", { keyPath: "id", autoIncrement: true });
-        food.createIndex("name", "name", { unique: false });
-        food.createIndex("cal", "cal", { unique: false });
-        food.createIndex("serving", "serving", { unique: false });
-        food.createIndex("reaction", "reaction", { unique: false });
-        food.createIndex("note", "note", { unique: false });
-
-        var timer = event.currentTarget.result.createObjectStore("timer", { keyPath: "id", autoIncrement: true });
-        timer.createIndex("hr", "hr", { unique: false });
-        timer.createIndex("min", "min", { unique: false });
-        timer.createIndex("date", "date", { unique: false });
-        timer.createIndex("isOn", "isOn", { unique: false });
-      };
+      var accountRepository = require('./Repositories/AccountRepository');
 
       setTimeout(function() {
         self.isRenderBtn = true;
 
-        var transaction = db.transaction("account", "readwrite");
-        var account = transaction.objectStore("account");
-        var getRequest = account.get(1);
-
-        getRequest.onsuccess = function(event) {
-          if(!getRequest.result)
-            self.modalVisible = true;
-        }
-
+        accountRepository.getAccountById(1).catch(function(error) {
+          console.log(error);
+          self.modalVisible = true;
+        });
       }, 1000);
     },
     components: { setProfile }
