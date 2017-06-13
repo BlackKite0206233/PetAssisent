@@ -141,12 +141,13 @@
 
       var self = this;
       bluetoothSerial.connect("", function(success) {
+        self.$ons.notification.toast("connected", {timeout: 2000}); 
         setInterval(function() {
           self.getWater();
         }, 5000);
       }, function(error) {
         self.water = self.wRemain = 0;
-        self.$ons.notification.alert("error"); 
+        self.$ons.notification.alert(error); 
       });
     },
     components: { progressBar, progressCircle }

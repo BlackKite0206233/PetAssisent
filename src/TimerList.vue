@@ -24,7 +24,7 @@
       <hr class="timer-hr">
 
       <ons-row align="center" class="timer-switch">
-        <ons-col width="80%" style="height:100%"></ons-col>
+        <ons-col width="75%" style="height:100%"></ons-col>
         <ons-col style="height:100%">
           <v-ons-switch input-id="collar"
               v-ons-model="isOn.value" class="my-collar"></v-ons-switch>

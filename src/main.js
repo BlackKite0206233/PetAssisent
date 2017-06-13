@@ -10,9 +10,9 @@ require('onsenui/css/onsenui.css');
 import Main from './Main.vue';
 
 Vue.use(VueOnsen);
-
+var ons =require('onsenui/js/onsenui');
+ons.platform.select('ios');
 //ons.forcePlatformStyling("ios");
-
 new Vue({
   el: '#app',
   template: '<Main></Main>',

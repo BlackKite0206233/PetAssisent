@@ -21,17 +21,18 @@
       click() {
         this.isOn = !this.isOn;
         var self = this;
+        self.$ons.notification.toast("click", {timeout: 2000}); 
         if(this.isOn) {
           bluetoothSerial.write("o", function(success) {
             self.imagePath = require('../www/assets/img/tapoff.png');
-            self.$ons.notification.alert("o");  
+            self.$ons.notification.toast("o", {timeout: 2000}); 
           }, function(error) {
             self.$ons.notification.alert("error");  
           });
         } else{
           bluetoothSerial.write("c", function(success) {
             self.imagePath = require('../www/assets/img/waterCtrl.png');
-            self.$ons.notification.alert("c");  
+            self.$ons.notification.toast("c", {timeout: 2000}); 
           }, function(error) {
             self.$ons.notification.alert("error");  
           });
