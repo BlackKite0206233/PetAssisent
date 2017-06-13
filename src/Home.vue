@@ -74,11 +74,13 @@
         name: '',
         age: '',
         weight: '',
-        water: 58,
-        wRemain: 58,
+        water: 0,
+        wRemain: 0,
         food: 191,
         lastDay: '1',
-        lastHr: '3'
+        lastHr: '3',
+        base: 100,
+        lastW: 0
       }
     },
     computed: {
@@ -115,6 +117,20 @@
           console.log(error);
           self.$ons.notification.alert("error");  
         });
+      },
+      getWater() {
+        bluetoothSerial.read(function(data) {
+          self.wRemain = parseInt(data);
+          if(self.water == 0) {
+            self.lastW = self.wRemain; 
+          } else {
+            self.water += (self.lastW - self.wRemain) / 100 * self.base;
+            self.lastW = self.wRemain; 
+          }
+        }, function(error) {
+          self.water = self.wRemain = 0;
+          self.$ons.notification.alert("error"); 
+        });
       }
     },
     updated: function() {
@@ -122,6 +138,16 @@
     },
     mounted: function() {
       this.getData();
+
+      var self = this;
+      bluetoothSerial.connect("", function(success) {
+        setInterval(function() {
+          self.getWater();
+        }, 5000);
+      }, function(error) {
+        self.water = self.wRemain = 0;
+        self.$ons.notification.alert("error"); 
+      });
     },
     components: { progressBar, progressCircle }
   }

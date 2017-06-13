@@ -22,9 +22,17 @@
         this.isOn = !this.isOn;
 
         if(this.isOn) {
-          this.imagePath = require('../www/assets/img/tapoff.png');
+          bluetoothSerial.write("o", function(success) {
+            this.imagePath = require('../www/assets/img/tapoff.png');
+          }, function(error) {
+            self.$ons.notification.alert("error");  
+          });
         } else{
-          this.imagePath = require('../www/assets/img/waterCtrl.png');
+          bluetoothSerial.write("c", function(success) {
+            this.imagePath = require('../www/assets/img/waterCtrl.png');
+          }, function(error) {
+            self.$ons.notification.alert("error");  
+          });
         }
       }
     }
