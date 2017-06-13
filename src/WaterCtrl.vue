@@ -24,12 +24,14 @@
         if(this.isOn) {
           bluetoothSerial.write("o", function(success) {
             this.imagePath = require('../www/assets/img/tapoff.png');
+            self.$ons.notification.alert("o");  
           }, function(error) {
             self.$ons.notification.alert("error");  
           });
         } else{
           bluetoothSerial.write("c", function(success) {
             this.imagePath = require('../www/assets/img/waterCtrl.png');
+            self.$ons.notification.alert("c");  
           }, function(error) {
             self.$ons.notification.alert("error");  
           });

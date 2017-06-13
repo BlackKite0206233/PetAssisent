@@ -11,6 +11,8 @@ import Main from './Main.vue';
 
 Vue.use(VueOnsen);
 
+//ons.forcePlatformStyling("ios");
+
 new Vue({
   el: '#app',
   template: '<Main></Main>',
