@@ -74,9 +74,9 @@
         name: '',
         age: '',
         weight: '',
-        water: 0,
-        wRemain: 0,
-        food: 191,
+        water: 58,
+        wRemain: 58,
+        food: 0,
         lastDay: '1',
         lastHr: '3',
         base: 100,
@@ -118,18 +118,17 @@
           self.$ons.notification.alert("error");  
         });
       },
-      getWater() {
-        bluetoothSerial.read(function(data) {
-          self.wRemain = parseInt(data);
-          if(self.water == 0) {
-            self.lastW = self.wRemain; 
-          } else {
-            self.water += (self.lastW - self.wRemain) / 100 * self.base;
-            self.lastW = self.wRemain; 
+      getFood() {
+        var foodRepository = require('./Repositories/FoodRepository');
+        var self = this;
+
+        foodRepository.getAll().then(function(result) {
+          self.food = 0;
+          for(var i = 0; i < result.length; i++) {
+            self.food += parseInt(result[i].cal);
           }
-        }, function(error) {
-          self.water = self.wRemain = 0;
-          self.$ons.notification.alert("error"); 
+        }).catch(function(error) {
+          self.$ons.notification.alert("webSQL didn't work");
         });
       }
     },
@@ -140,15 +139,11 @@
       this.getData();
 
       var self = this;
-      bluetoothSerial.connect("", function(success) {
-        self.$ons.notification.toast("connected", {timeout: 2000}); 
-        setInterval(function() {
-          self.getWater();
-        }, 5000);
-      }, function(error) {
-        self.water = self.wRemain = 0;
-        self.$ons.notification.alert(error); 
-      });
+      setInterval(function() {
+        self.getFood();
+      }, 1000);      
+
+      
     },
     components: { progressBar, progressCircle }
   }

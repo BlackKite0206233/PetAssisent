@@ -21,20 +21,43 @@
       click() {
         this.isOn = !this.isOn;
         var self = this;
-        self.$ons.notification.toast("click", {timeout: 2000}); 
+
+        var list;
+        var bluetoothSerial=require('cordova-plugin-bluetooth-serial/www/bluetoothSerial');
+        /*
+        bluetoothSerial.list(function(success) {
+          list = success;
+          self.$ons.notification.toast("list", {timeout: 2000}); 
+        }, function(error) {
+          self.$ons.notification.alert(error);  
+        });*/
+
+        //.self.$ons.notification.toast(list, {timeout: 2000}); 
+
         if(this.isOn) {
-          bluetoothSerial.write("o", function(success) {
-            self.imagePath = require('../www/assets/img/tapoff.png');
-            self.$ons.notification.toast("o", {timeout: 2000}); 
+          bluetoothSerial.connect("98:D3:32:10:8D：A7", function(success) {
+            self.$ons.notification.toast("connect", {timeout: 2000}); 
+            bluetoothSerial.write("o", function(success) {
+              self.imagePath = require('../www/assets/img/tapoff.png');
+              self.$ons.notification.toast("o", {timeout: 2000}); 
+            }, function(error) {
+              self.$ons.notification.alert(error);  
+            });
           }, function(error) {
-            self.$ons.notification.alert("error");  
+            self.$ons.notification.alert(error);
           });
+          
         } else{
-          bluetoothSerial.write("c", function(success) {
-            self.imagePath = require('../www/assets/img/waterCtrl.png');
-            self.$ons.notification.toast("c", {timeout: 2000}); 
+          bluetoothSerial.connect("98:D3:32:10:8D：A7", function(success) {
+            self.$ons.notification.toast("connect", {timeout: 2000}); 
+            bluetoothSerial.write("c", function(success) {
+              self.imagePath = require('../www/assets/img/waterCtrl.png');
+              self.$ons.notification.toast("c", {timeout: 2000}); 
+            }, function(error) {
+              self.$ons.notification.alert(error);  
+            });
           }, function(error) {
-            self.$ons.notification.alert("error");  
+            self.$ons.notification.alert(error);
           });
         }
       }
